@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+      "mine.cpplint",
+      "ms-vscode.cpptools",
+      "ms-vscode.cpptools-extension-pack",
+      "jeff-hykin.better-cpp-syntax",
+    ]
+  }
