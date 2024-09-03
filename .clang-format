@@ -3,9 +3,13 @@
 BasedOnStyle: Google
 IndentWidth: 4
 TabWidth: 4
+AccessModifierOffset: -3
 UseTab: Never
 ColumnLimit: 88
-AlignConsecutiveAssignments: AcrossEmptyLines
-AlignConsecutiveDeclarations: AcrossEmptyLines
-AlignConsecutiveTableGenBreakingDAGArgColons: AcrossEmptyLines
-AllowShortFunctionsOnASingleLine: None
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+IncludeBlocks: Regroup
+IndentAccessModifiers: false
+PackConstructorInitializers: NextLine
+AlignConsecutiveTableGenBreakingDAGArgColons: Consecutive
+# InsertTrailingCommas: Wrapped
