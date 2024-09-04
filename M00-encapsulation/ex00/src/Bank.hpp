@@ -2,10 +2,14 @@
 
 #include <iostream>
 #include <map>
+#include <sstream>
+#include <string>
 
 #include "Account.hpp"
 
 class Bank {
+    friend std::ostream& operator<<(std::ostream& os, Bank const& bank);
+
  public:
     Bank(void);
     ~Bank(void);
@@ -15,41 +19,50 @@ class Bank {
     Account const& createAccount(void);
     Account const& createAccount(float const initialDeposit);
     void           deleteAccount(int const id);
-    void           makeDeposit(int const id, float const amount);
-    void           makeLoan(int const id, float const amount);
-    void           makeWithdrawal(int const id, float const amount);
+    void           deposit(int const id, float const amount);
+    void           withdrawal(int const id, float const amount);
+    void           loan(int const id, float const amount);
+    void           repay(int const id, float const amount);
 
     // float const&          getLiquidity(void) const;
 
+    class Exception : public std::exception {
+        friend class Bank;
+
+     private:
+        Exception(void);
+    };
+
+    class AccountNotFound : public Bank::Exception {
+     public:
+        virtual char const* what() const throw();
+    };
+
+    class NotEnoughAccountMoney : public Bank::Exception {
+     public:
+        virtual char const* what() const throw();
+    };
+
+    class NotEnoughLiquidity : public Bank::Exception {
+     public:
+        virtual char const* what() const throw();
+    };
+
+    class BankLiquidityLimit : public Bank::Exception {
+     public:
+        virtual char const* what() const throw();
+    };
+
  private:
     typedef std::map<int, Account*> BankAccounts;
-    float                           _liquidity;
-    BankAccounts                    _accounts;
 
-    Account& getAccount(int const id);
+    static float const _inflowTax;
+    static float const _min_liquidity_percentage;
 
-    class AccountNotFound : public std::exception {
-     public:
-        virtual const char* what() const throw();
-    };
+    BankAccounts _accounts;
+    float        _liquidity;
+    float        _totalLoans;
 
-    class NotEnoughBankLiquidity : public std::exception {
-     public:
-        virtual const char* what() const throw();
-    };
-
-    class NotEnoughAccountMoney : public std::exception {
-     public:
-        virtual const char* what() const throw();
-    };
-
-    // friend std::ostream& operator<<(std::ostream& os, const Bank& bank) {
-    //     BankAccounts::const_iterator it;
-
-    //     os << "Bank informations : " << std::endl;
-    //     os << "Liquidity : " << bank._liquidity << std::endl;
-    //     for (it = bank._accounts.begin(); it != bank._accounts.end(); it++)
-    //         os << "it" << std::endl;
-    //     return (os);
-    // }
+    void checkLiquidity(void);
+    void checkLiquidity(float const amount);
 };
