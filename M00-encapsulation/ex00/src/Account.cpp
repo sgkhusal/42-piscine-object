@@ -19,6 +19,6 @@ float const& Account::getTotalLoans(void) const { return _loanDebts; }
 
 std::ostream& operator<<(std::ostream& os, Account const& account) {
     os << "Account: [" << account.getId() << "] - value: [" << account.getValue()
-       << "] - total loans: [" << account.getTotalLoans() << "]";
+       << "] - total loans debts: [" << account.getTotalLoans() << "]";
     return (os);
 }

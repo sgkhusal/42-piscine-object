@@ -45,12 +45,19 @@ void Bank::deleteAccount(int const id) {
     BankAccounts::iterator it = _accounts.find(id);
 
     if (it == _accounts.end()) throw AccountNotFound();
+
+    if (it->second->getTotalLoans() > 0)
+        this->repay(it->second->getId(), it->second->getTotalLoans());
+
+    if (it->second->getValue() > 0)
+        this->withdrawal(it->second->getId(), it->second->getValue());
+
     delete it->second;
     _accounts.erase(it);
 }
 
 void Bank::deposit(int const id, float const amount) {
-    Account&    account  = *(_accounts[id]);
+    Account&    account  = this->getAccount(id);
     float const discount = amount * _inflowTax;
 
     _liquidity += amount;
@@ -58,7 +65,7 @@ void Bank::deposit(int const id, float const amount) {
 }
 
 void Bank::withdrawal(int const id, float const amount) {
-    Account& account = *(_accounts[id]);
+    Account& account = this->getAccount(id);
 
     if (account.getValue() < amount) throw NotEnoughAccountMoney();
     checkLiquidity(amount);
@@ -67,24 +74,25 @@ void Bank::withdrawal(int const id, float const amount) {
 }
 
 void Bank::loan(int const id, float const amount) {
-    Account& account = *(_accounts[id]);
+    Account& account = this->getAccount(id);
 
     checkLiquidity(amount);
-    account._value += amount;
 
     float loan_fees = amount * _inflowTax;
     float debt      = amount + loan_fees;
     account._loanDebts += debt;
     _totalLoans += debt;
+    _liquidity -= amount;
 }
 
 void Bank::repay(int const id, float const amount) {
-    Account& account = *(_accounts[id]);
+    Account& account = this->getAccount(id);
 
     if (account.getValue() < amount) throw NotEnoughAccountMoney();
     account._value -= amount;
     account._loanDebts -= amount;
     _totalLoans -= amount;
+    _liquidity += amount;
 }
 
 void Bank::checkLiquidity(void) { checkLiquidity(0.0); }
@@ -101,6 +109,16 @@ void Bank::checkLiquidity(float const amount) {
         throw BankLiquidityLimit();
 }
 
+Account& Bank::getAccount(int const id) {
+    BankAccounts::const_iterator it = _accounts.find(id);
+
+    if (it == _accounts.end()) throw AccountNotFound();
+    return *(it->second);
+}
+
+float const& Bank::getLiquidity(void) const { return _liquidity; }
+float const& Bank::getTotalLoans(void) const { return _totalLoans; }
+
 Bank::Exception::Exception(void) {}
 
 char const* Bank::AccountNotFound::what() const throw() { return "Account Not Found"; }
@@ -114,22 +132,16 @@ char const* Bank::NotEnoughLiquidity::what() const throw() {
 }
 
 char const* Bank::BankLiquidityLimit::what() const throw() {
-    float             percentage = Bank::_min_liquidity_percentage * 100;
-    std::stringstream ss;
-    std::string       text;
-
-    ss << percentage;
-    ss >> text;
-
-    return (text + std::string("% liquidity limit reached")).c_str();
+    return "Liquidity limit reached";
 }
 
 std::ostream& operator<<(std::ostream& os, Bank const& bank) {
     Bank::BankAccounts::const_iterator it;
 
-    os << "Bank informations : " << std::endl;
-    os << "Liquidity : " << bank._liquidity << std::endl;
+    os << "Bank informations: " << std::endl;
+    os << "Liquidity: " << bank._liquidity << std::endl;
+    os << "Loans: " << bank._totalLoans << std::endl;
     for (it = bank._accounts.begin(); it != bank._accounts.end(); it++)
-        os << it->second << std::endl;
+        os << *(it->second) << std::endl;
     return (os);
 }

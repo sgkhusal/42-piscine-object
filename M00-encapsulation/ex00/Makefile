@@ -2,8 +2,8 @@ NAME    = ex.exe
 
 CC      = c++
 CFLAGS  = -g3 -Wall -Wextra -Werror -std=c++98 -pedantic -MMD -MP
-SRC     = main.cpp Account.cpp Bank.cpp
-INC     = Account.hpp Bank.hpp
+SRC     = test.cpp main.cpp Account.cpp Bank.cpp
+INC     = test.hpp Account.hpp Bank.hpp
 INCPATH = -I./src
 
 OBJDIR  = obj

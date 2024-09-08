@@ -16,6 +16,9 @@ class Bank {
 
     Account const& operator[](int const id) const;
 
+    float const&        getLiquidity(void) const;
+    float const&        getTotalLoans(void) const;
+
     Account const& createAccount(void);
     Account const& createAccount(float const initialDeposit);
     void           deleteAccount(int const id);
@@ -23,8 +26,6 @@ class Bank {
     void           withdrawal(int const id, float const amount);
     void           loan(int const id, float const amount);
     void           repay(int const id, float const amount);
-
-    // float const&          getLiquidity(void) const;
 
     class Exception : public std::exception {
         friend class Bank;
@@ -65,4 +66,6 @@ class Bank {
 
     void checkLiquidity(void);
     void checkLiquidity(float const amount);
+
+    Account&    getAccount(int const id);
 };
