@@ -2,8 +2,8 @@ NAME    = ex.exe
 
 CC      = c++
 CFLAGS  = -g3 -Wall -Wextra -Werror -std=c++98 -pedantic -MMD -MP
-SRC     = main.cpp
-INC     =
+SRC     = main.cpp Vector2.cpp Graph.cpp
+INC     = Vector2.cpp Graph.hpp
 INCPATH = -I./src
 
 OBJDIR  = obj
