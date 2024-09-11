@@ -1,12 +1,16 @@
 #pragma once
 
+#include <cmath>
 #include <deque>
-#include <vector>
 #include <iostream>
 #include <string>
-#include <cmath>
+#include <vector>
 
 #include "Vector2.hpp"
+
+#define AXES_LINE 1
+#define ZERO_LINE 1
+#define NEW_LINE 1
 
 class Graph {
     friend std::ostream& operator<<(std::ostream& os, Graph const& graph);

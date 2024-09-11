@@ -22,9 +22,23 @@ void Graph::updateSize(float x, float y) {
 }
 
 std::string Graph::toString(void) const {
-    int col_size   = 2;
-    int x_size     = (_size.getX() + 3) * col_size + 1;
-    int y_size     = _size.getY() + 3;
+    int col_size   = 2;  // aqui
+    int x_max =  _size.getX() + 1;
+    int y_max =  _size.getY() + 1;
+    bool x_bigger = false;
+    bool y_bigger = false;
+
+    if (x_max > 9) {
+        x_max = 9;
+        x_bigger = true;
+    }
+    if (y_max > 9) {
+        y_max = 9;
+        y_bigger = true;
+    }
+
+    int x_size     = (x_max  + ZERO_LINE + AXES_LINE) * col_size + NEW_LINE;
+    int y_size     = y_max + ZERO_LINE + AXES_LINE;
     int graph_size = x_size * y_size;
 
     std::string graph(graph_size, ' ');
@@ -34,12 +48,12 @@ std::string Graph::toString(void) const {
         i = id / x_size;
         j = id % x_size;
         x = (j - 2) / 2;
-        y = _size.getY() + 1 - i;
+        y = y_max - i;
 
         if (i == y_size - 1) {
-            if (j > 2 && (j - 2) % 2) *it = x + 48;
+            if (j > 2 && (j - 2) % 2) *it = x + 48;  // aqui
         } else if (j == 1) {
-            *it = y + 48;
+            *it = y + 48;  // aqui
         } else if (j % 2) {
             *it = '.';
         } else if (j == x_size - 1) {
@@ -52,11 +66,16 @@ std::string Graph::toString(void) const {
     for (points::const_iterator it = _points.begin(); it != _points.end(); it++) {
         x = it->getX();
         y = it->getY();
-        i = _size.getY() + 1 - y;
+        if (x > 9 || y > 9)
+            continue;
+        i = y_max - y;
         j = x * 2 + 2;
         id = x_size * i + j + 1;
         graph[id] = 'X';
     }
+
+    if (y_bigger && _size.getX() > 9) graph.insert(--graph.end(), 3, '.');
+    if (x_bigger && _size.getY() > 9) graph.insert(0, " .\n .\n .\n");
 
     return graph;
 }
