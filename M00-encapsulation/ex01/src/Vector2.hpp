@@ -6,6 +6,9 @@ struct Vector2 {
     Vector2(Vector2 const& rhs);
     Vector2& operator=(Vector2 const& rhs);
 
+    bool operator==(Vector2 const& rhs) const;
+    bool operator!=(Vector2 const& rhs) const;
+
     float getX() const;
     float getY() const;
     void setX(float x);

@@ -17,6 +17,12 @@ Vector2& Vector2::operator=(Vector2 const& rhs) {
     return *this;
 }
 
+bool Vector2::operator==(Vector2 const& rhs) const {
+    return _x == rhs.getX() && _y == rhs.getY();
+}
+
+bool Vector2::operator!=(Vector2 const& rhs) const { return !(*this == rhs); }
+
 float Vector2::getX() const { return this->_x; }
 
 float Vector2::getY() const { return this->_y; }

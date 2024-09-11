@@ -24,7 +24,9 @@ void Graph::updateSize(float x, float y) {
 }
 
 char const* Graph::toString(void) const {
-    if (_size == 0) return "";
+    Vector2 origin = Vector2(0, 0);
+
+    if (_size == origin) return "";
 
     return "";
 }
