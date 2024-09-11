@@ -1,8 +1,10 @@
 #pragma once
 
 #include <deque>
+#include <vector>
 #include <iostream>
 #include <string>
+#include <cmath>
 
 #include "Vector2.hpp"
 
@@ -25,5 +27,5 @@ class Graph {
     points  _points;
 
     void        updateSize(float x, float y);
-    char const* toString(void) const;
+    std::string toString(void) const;
 };
