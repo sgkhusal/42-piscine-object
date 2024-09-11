@@ -22,14 +22,14 @@ void Graph::updateSize(float x, float y) {
 }
 
 std::string Graph::toString(void) const {
-    int col_size = 2;
+    int col_size   = 2;
     int x_size     = (_size.getX() + 3) * col_size + 1;
     int y_size     = _size.getY() + 3;
     int graph_size = x_size * y_size;
 
     std::string graph(graph_size, ' ');
-    int id = graph_size;
-    int i, j, x, y;
+    int         id = graph_size;
+    int         i, j, x, y;
     for (std::string::iterator it = graph.end(); it != graph.begin(); it--) {
         i = id / x_size;
         j = id % x_size;
@@ -37,8 +37,7 @@ std::string Graph::toString(void) const {
         y = _size.getY() + 1 - i;
 
         if (i == y_size - 1) {
-            if (j > 2 && (j - 2) % 2)
-                *it = x + 48;
+            if (j > 2 && (j - 2) % 2) *it = x + 48;
         } else if (j == 1) {
             *it = y + 48;
         } else if (j % 2) {
@@ -47,8 +46,16 @@ std::string Graph::toString(void) const {
             *it = '\n';
         }
 
-        if (x == 2 && y == 2 && j % 2) *it = 'X';
         id--;
+    }
+
+    for (points::const_iterator it = _points.begin(); it != _points.end(); it++) {
+        x = it->getX();
+        y = it->getY();
+        i = _size.getY() + 1 - y;
+        j = x * 2 + 2;
+        id = x_size * i + j + 1;
+        graph[id] = 'X';
     }
 
     return graph;
