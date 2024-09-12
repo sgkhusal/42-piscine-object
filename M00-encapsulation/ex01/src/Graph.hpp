@@ -18,15 +18,12 @@ class Graph {
  public:
     Graph(void);
     ~Graph(void);
-    // Graph(Graph const& rhs);
-    // Graph& operator=(Graph const& rhs);
 
     void addPoint(Vector2 const& point);
     void addPoint(float x, float y);
 
  private:
     typedef std::deque<Vector2> points;
-
     Vector2 _size;
     points  _points;
 
