@@ -2,9 +2,10 @@
 
 #include <cmath>
 #include <deque>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 #include <string>
-#include <vector>
 
 #include "Vector2.hpp"
 
@@ -17,6 +18,7 @@ class Graph {
 
  public:
     Graph(void);
+    explicit Graph(std::string const& filename);
     ~Graph(void);
 
     void addPoint(Vector2 const& point);
@@ -24,9 +26,11 @@ class Graph {
 
  private:
     typedef std::deque<Vector2> points;
+
     Vector2 _size;
     points  _points;
 
     void        updateSize(float x, float y);
+    void        getFilePoints(std::string const& filename);
     std::string toString(void) const;
 };
