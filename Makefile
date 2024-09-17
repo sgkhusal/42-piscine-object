@@ -1,7 +1,8 @@
 FOLDERS = boilerplate \
 		  encapsulation/ex00 \
 		  M00-encapsulation/ex00 \
-		  M00-encapsulation/ex01
+		  M00-encapsulation/ex01 \
+		  M01-relationship/ex00
 
 build:
 	@for folder in $(FOLDERS); do \
