@@ -4,15 +4,15 @@
 #include "ToolWorker.hpp"
 #include "test_utils.hpp"
 
-class Shovel : public Tool {
+class Hammer : public Tool {
  public:
-    Shovel(void) : Tool(SHOVEL) { test::comment("Shovel constructor called"); }
-    ~Shovel(void) { test::comment("Shovel destructor called"); }
+    Hammer(void) : Tool(HAMMER) { test::comment("Hammer constructor called"); }
+    ~Hammer(void) { test::comment("Hammer destructor called"); }
 
  private:
     void use(void) {
         this->numberOfUses += 1;
-        std::cout << GREEN << "Thwack, thwack" << GREY << " - shovel used "
+        std::cout << GREEN << "Clang, clang, clang" << GREY << " - hammer used "
                   << this->numberOfUses << " times" << RESET << std::endl;
     }
 

@@ -3,7 +3,13 @@ NAME    = ex.exe
 CC      = c++
 CFLAGS  = -g3 -Wall -Wextra -Werror -std=c++98 -pedantic -MMD -MP
 SRC     =	main.cpp test_utils.cpp
-INC     = test_utils.hpp Postion.hpp Statistic.hpp Worker.hpp
+INC     =	test_utils.hpp \
+			Postion.hpp \
+			Statistic.hpp \
+			Worker.hpp \
+			Tool.hpp \
+			Shovel.hpp \
+			Hammer.hpp
 INCPATH = -I./src
 
 OBJDIR  = obj
