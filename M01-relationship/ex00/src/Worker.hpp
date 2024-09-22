@@ -2,8 +2,8 @@
 
 #include "Position.hpp"
 #include "Shovel.hpp"
-#include "ShovelWorker.hpp"
 #include "Statistic.hpp"
+#include "ToolWorker.hpp"
 #include "test_utils.hpp"
 
 class Worker {
@@ -21,8 +21,8 @@ class Worker {
     }
     ~Worker(void) {
         test::comment("Worker destructor called");
-        if (this->shovel && ShovelWorker::get(this->shovel))
-            ShovelWorker::remove(this->shovel);
+        if (this->shovel && ToolWorker::get(this->shovel))
+            ToolWorker::remove(this->shovel);
     }
 
     class Exception : public std::exception {
@@ -39,7 +39,7 @@ class Worker {
 
     void work(void) {
         if (!shovel) throw Worker::NoShovel();
-        if (!ShovelWorker::get(this->shovel)) {
+        if (!ToolWorker::get(this->shovel)) {
             this->shovel = NULL;
             throw Worker::NoShovel();
         }
@@ -48,18 +48,18 @@ class Worker {
     }
 
     void takeShovel(Shovel* shovel) {
-        Worker* oldWorker = ShovelWorker::get(shovel);
+        Worker* oldWorker = ToolWorker::get(shovel);
 
         if (oldWorker) oldWorker->releaseShovel();
         std::cout << GREEN << "Worker gets a shovel at " << shovel << RESET
                   << std::endl;
         this->shovel = shovel;
-        ShovelWorker::add(shovel, this);
+        ToolWorker::add(shovel, this);
     }
 
     void releaseShovel(void) {
-        if (this->shovel && ShovelWorker::get(this->shovel)) {
-            ShovelWorker::remove(this->shovel);
+        if (this->shovel && ToolWorker::get(this->shovel)) {
+            ToolWorker::remove(this->shovel);
             this->shovel = NULL;
             test::comment("Worker releases the shovel");
         } else {

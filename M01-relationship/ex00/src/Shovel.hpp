@@ -1,19 +1,15 @@
 #pragma once
 
+#include "Tool.hpp"
+#include "ToolWorker.hpp"
 #include "test_utils.hpp"
-#include "ShovelWorker.hpp"
 
-class Shovel {
+class Shovel : public Tool {
  public:
-    Shovel(void) : numberOfUses(0) { test::comment("Shovel constructor called"); }
-    ~Shovel(void) {
-        test::comment("Shovel destructor called");
-        ShovelWorker::remove(this);
-    }
+    Shovel(void) : Tool(SHOVEL) { test::comment("Shovel constructor called"); }
+    ~Shovel(void) { test::comment("Shovel destructor called"); }
 
  private:
-    int numberOfUses;
-
     void use(void) {
         this->numberOfUses += 1;
         std::cout << GREEN << "Shovel used " << this->numberOfUses << " times" << RESET
@@ -21,9 +17,4 @@ class Shovel {
     }
 
     friend class Worker;
-
-    friend std::ostream& operator<<(std::ostream& os, Shovel const& rhs) {
-        os << "Shovel used " << rhs.numberOfUses << " times";
-        return os;
-    }
 };
