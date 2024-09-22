@@ -1,33 +1,18 @@
 #pragma once
 
 #include "test_utils.hpp"
-
-class Worker;
+#include "ShovelWorker.hpp"
 
 class Shovel {
  public:
-    Shovel(void) : numberOfUses(0), worker(NULL) {
-        test::comment("Shovel constructor called");
-    }
+    Shovel(void) : numberOfUses(0) { test::comment("Shovel constructor called"); }
     ~Shovel(void) {
         test::comment("Shovel destructor called");
-        // if (this->worker) this->worker->releaseShovel();  // TODO: table
-    }
-
-    Worker* getOwner(void) { return this->worker; }
-    void    resetWorker(void) {
-        this->worker = NULL;
-        std::cout << GREEN << "Shovel now is not with any worker" << RESET << std::endl;
-    }
-    void setWorker(Worker* newWorker) {
-        this->worker = newWorker;
-        std::cout << GREEN << "Shovel worker updated to " << this->worker << RESET
-                  << std::endl;
+        ShovelWorker::remove(this);
     }
 
  private:
-    int     numberOfUses;
-    Worker* worker;
+    int numberOfUses;
 
     void use(void) {
         this->numberOfUses += 1;
@@ -38,8 +23,7 @@ class Shovel {
     friend class Worker;
 
     friend std::ostream& operator<<(std::ostream& os, Shovel const& rhs) {
-        os << "Shovel used " << rhs.numberOfUses
-           << " times - worker pointer at: " << rhs.worker;
+        os << "Shovel used " << rhs.numberOfUses << " times";
         return os;
     }
 };

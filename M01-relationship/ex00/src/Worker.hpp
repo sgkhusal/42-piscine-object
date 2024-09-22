@@ -2,7 +2,9 @@
 
 #include "Position.hpp"
 #include "Shovel.hpp"
+#include "ShovelWorker.hpp"
 #include "Statistic.hpp"
+#include "test_utils.hpp"
 
 class Worker {
  public:
@@ -19,7 +21,8 @@ class Worker {
     }
     ~Worker(void) {
         test::comment("Worker destructor called");
-        if (this->shovel) this->shovel->resetWorker();
+        if (this->shovel && ShovelWorker::get(this->shovel))
+            ShovelWorker::remove(this->shovel);
     }
 
     class Exception : public std::exception {
@@ -31,28 +34,37 @@ class Worker {
 
     class NoShovel : public Worker::Exception {
      public:
-        virtual char const* what() const throw() {
-            return "Worker has no shovel to work";
-        }
+        virtual char const* what() const throw() { return "Worker has no shovel"; }
     };
 
     void work(void) {
         if (!shovel) throw Worker::NoShovel();
+        if (!ShovelWorker::get(this->shovel)) {
+            this->shovel = NULL;
+            throw Worker::NoShovel();
+        }
         test::comment("Worker is working with his shovel");
         shovel->use();
     }
+
     void takeShovel(Shovel* shovel) {
-        Worker* oldWorker = shovel->getOwner();
+        Worker* oldWorker = ShovelWorker::get(shovel);
 
         if (oldWorker) oldWorker->releaseShovel();
         std::cout << GREEN << "Worker gets a shovel at " << shovel << RESET
                   << std::endl;
         this->shovel = shovel;
-        this->shovel->setWorker(this);
+        ShovelWorker::add(shovel, this);
     }
+
     void releaseShovel(void) {
-        this->shovel = NULL;
-        test::comment("Worker releases the shovel");
+        if (this->shovel && ShovelWorker::get(this->shovel)) {
+            ShovelWorker::remove(this->shovel);
+            this->shovel = NULL;
+            test::comment("Worker releases the shovel");
+        } else {
+            throw Worker::NoShovel();
+        }
     }
 
  private:
