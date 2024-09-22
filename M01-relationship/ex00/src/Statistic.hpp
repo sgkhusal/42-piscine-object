@@ -10,7 +10,7 @@ class Statistic {
     Statistic(int level, int exp) : level(level), exp(exp) {
         test::comment("Statistic constructor called");
     }
-    Statistic(Statistic const& stat) : level(stat.getLevel()), exp(stat.getExp()) {
+    Statistic(Statistic const& stat) : level(stat.level), exp(stat.exp) {
         test::comment("Statistic copy constructor called");
     }
     ~Statistic(void) { test::comment("Statistic destructor called"); }
