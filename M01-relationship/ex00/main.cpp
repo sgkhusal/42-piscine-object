@@ -45,7 +45,7 @@ int main(void) {
         std::cout << *shovel << std::endl;
 
         test::subtitle("The Worker can take a Shovel");
-        worker->takeShovel(shovel);
+        worker->takeTool(shovel);
         std::cout << *worker << std::endl;
         std::cout << *shovel << std::endl;
 
@@ -65,7 +65,7 @@ int main(void) {
         test::subtitle("Worker without shovel tries to work");
         Worker worker = Worker();
         worker.work();
-    } catch (Worker::NoShovel& e) {
+    } catch (Worker::NoTool& e) {
         test::error(e.what());
     }
 
@@ -76,10 +76,10 @@ int main(void) {
         test::subtitle("Create 2 works and a shovel");
         Worker worker1 = Worker();
         Worker worker2 = Worker();
-        Shovel shovel = Shovel();
+        Shovel shovel  = Shovel();
 
         test::subtitle("Worker 1 takes the tool");
-        worker1.takeShovel(&shovel);
+        worker1.takeTool(&shovel);
         std::cout << "Worker 1: " << worker1 << std::endl;
         std::cout << "Worker 2: " << worker2 << std::endl;
         std::cout << shovel << std::endl;
@@ -88,7 +88,7 @@ int main(void) {
         worker1.work();
 
         test::subtitle("Worker 2 takes the same tool");
-        worker2.takeShovel(&shovel);
+        worker2.takeTool(&shovel);
         std::cout << "Worker 1: " << worker1 << std::endl;
         std::cout << "Worker 2: " << worker2 << std::endl;
         std::cout << shovel << std::endl;
@@ -98,7 +98,7 @@ int main(void) {
 
         test::subtitle("Worker 1 tries to work again");
         worker1.work();
-    } catch (Worker::NoShovel& e) {
+    } catch (Worker::NoTool& e) {
         test::error(e.what());
     }
 

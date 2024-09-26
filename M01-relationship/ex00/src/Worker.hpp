@@ -1,81 +1,84 @@
 #pragma once
 
+#include <iostream>
+#include <map>
+#include <vector>
+
 #include "Position.hpp"
-#include "Shovel.hpp"
 #include "Statistic.hpp"
+#include "Tool.hpp"
 #include "ToolWorker.hpp"
 #include "test_utils.hpp"
 
 class Worker {
  public:
-    Worker(void) : coordonnee(Position()), stat(Statistic()), shovel(NULL) {
+    Worker(void) : coordonnee(Position()), stat(Statistic()), tool(NULL) {
         test::comment("Worker constructor called");
     }
     Worker(Position const& p, Statistic const& s)
-        : coordonnee(p), stat(s), shovel(NULL) {
+        : coordonnee(p), stat(s), tool(NULL) {
         test::comment("Worker constructor called");
     }
     Worker(int x, int y, int z, int level, int exp)
-        : coordonnee(Position(x, y, z)), stat(Statistic(level, exp)), shovel(NULL) {
+        : coordonnee(Position(x, y, z)), stat(Statistic(level, exp)), tool(NULL) {
         test::comment("Worker constructor called");
     }
     ~Worker(void) {
         test::comment("Worker destructor called");
-        if (this->shovel && ToolWorker::get(this->shovel))
-            ToolWorker::remove(this->shovel);
+        if (this->tool && ToolWorker::get(this->tool))
+            ToolWorker::remove(this->tool);
     }
 
     class Exception : public std::exception {
-        friend class Worker;
-
      private:
         Exception(void) {}
+        friend class Worker;
     };
 
-    class NoShovel : public Worker::Exception {
+    class NoTool : public Worker::Exception {
      public:
-        virtual char const* what() const throw() { return "Worker has no shovel"; }
+        virtual char const* what() const throw() { return "Worker has no tool"; }
     };
 
     void work(void) {
-        if (!shovel) throw Worker::NoShovel();
-        if (!ToolWorker::get(this->shovel)) {
-            this->shovel = NULL;
-            throw Worker::NoShovel();
+        if (!tool) throw Worker::NoTool();
+        if (!ToolWorker::get(this->tool)) {
+            this->tool = NULL;
+            throw Worker::NoTool();
         }
-        test::comment("Worker is working with his shovel");
-        shovel->use();
+        test::comment("Worker is working with his tool");
+        tool->use();
     }
 
-    void takeShovel(Shovel* shovel) {
-        Worker* oldWorker = ToolWorker::get(shovel);
+    void takeTool(Tool* tool) {
+        Worker* oldWorker = ToolWorker::get(tool);
 
-        if (oldWorker) oldWorker->releaseShovel();
-        std::cout << GREEN << "Worker gets a shovel at " << shovel << RESET
+        if (oldWorker) oldWorker->releaseTool();
+        std::cout << GREEN << "Worker gets a tool at " << tool << RESET
                   << std::endl;
-        this->shovel = shovel;
-        ToolWorker::add(shovel, this);
+        this->tool = tool;
+        ToolWorker::add(tool, this);
     }
 
-    void releaseShovel(void) {
-        if (this->shovel && ToolWorker::get(this->shovel)) {
-            ToolWorker::remove(this->shovel);
-            this->shovel = NULL;
-            test::comment("Worker releases the shovel");
+    void releaseTool(void) {
+        if (this->tool && ToolWorker::get(this->tool)) {
+            ToolWorker::remove(this->tool);
+            this->tool = NULL;
+            test::comment("Worker releases the tool");
         } else {
-            throw Worker::NoShovel();
+            throw Worker::NoTool();
         }
     }
 
  private:
     Position  coordonnee;
     Statistic stat;
-    Shovel*   shovel;
+    Tool*     tool;
 
     friend std::ostream& operator<<(std::ostream& os, Worker const& rhs) {
         os << "Worker:\n"
            << "- Position: " << rhs.coordonnee << "\n- Statistics: " << rhs.stat
-           << "\n- Shovel pointer at: " << rhs.shovel;
+           << "\n- Tool pointer at: " << rhs.tool;
         return os;
     }
 };
