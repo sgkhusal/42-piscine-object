@@ -1,7 +1,9 @@
 #include <iostream>
 
-#include "Shovel.hpp"
+#include "Tool.hpp"
 #include "Worker.hpp"
+#include "Shovel.hpp"
+#include "Hammer.hpp"
 #include "test_utils.hpp"
 
 int main(void) {
@@ -32,16 +34,18 @@ int main(void) {
         test::comment("remaining stack variables destructor:");
     }
 
-    test::title("AGGREGATION");
+    test::title("AGGREGATION & INHERENCE");
     test::subtitle(
-        "The Worker can have a Shovel that is not destroyed in case of Worker "
+        "The Worker can have a Tool that is not destroyed in case of Worker "
         "deletion");
     {
-        test::subtitle("Create a Worker and a Shovel");
+        test::subtitle("Create a Worker");
         Worker* worker = new Worker();
         std::cout << *worker << std::endl;
         test::enter();
-        Shovel* shovel = new Shovel();
+
+        test::subtitle("Create a Shovel - Shovel is a Tool");
+        Tool* shovel = new Shovel();
         std::cout << *shovel << std::endl;
 
         test::subtitle("The Worker can take a Shovel");
@@ -51,6 +55,7 @@ int main(void) {
 
         test::enter();
         // shovel.use(); // can't call private method
+        worker->work(SHOVEL);
         worker->work();
 
         test::subtitle("deleting Worker");
@@ -70,28 +75,29 @@ int main(void) {
     }
 
     test::subtitle(
-        "if the tool is already given to a worker, giving it to another worker"
+        "If the tool is already given to a worker, giving it to another worker"
         " removes it from the first");
     try {
-        test::subtitle("Create 2 works and a shovel");
+        test::subtitle("Create 2 works");
         Worker worker1 = Worker();
         Worker worker2 = Worker();
-        Shovel shovel  = Shovel();
+        test::subtitle("Create a hammer - Hammer is a Tool");
+        Hammer hammer  = Hammer();
 
         test::subtitle("Worker 1 takes the tool");
-        worker1.takeTool(&shovel);
+        worker1.takeTool(&hammer);
         std::cout << "Worker 1: " << worker1 << std::endl;
         std::cout << "Worker 2: " << worker2 << std::endl;
-        std::cout << shovel << std::endl;
+        std::cout << hammer << std::endl;
 
         test::enter();
         worker1.work();
 
         test::subtitle("Worker 2 takes the same tool");
-        worker2.takeTool(&shovel);
+        worker2.takeTool(&hammer);
         std::cout << "Worker 1: " << worker1 << std::endl;
         std::cout << "Worker 2: " << worker2 << std::endl;
-        std::cout << shovel << std::endl;
+        std::cout << hammer << std::endl;
 
         test::enter();
         worker2.work();
@@ -102,6 +108,7 @@ int main(void) {
         test::error(e.what());
     }
 
-    test::title("INHERENCE");
+    // Worker has a list of Tools, hammers and shovels
+
     test::title("ASSOCIATION ");
 }
