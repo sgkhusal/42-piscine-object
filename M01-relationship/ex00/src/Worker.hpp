@@ -52,10 +52,12 @@ class Worker {
         virtual char const* what() const throw() { return "Worker has no tool"; }
     };
 
-    Tool* getTool(ToolType type) {
+    template <typename T>
+    Tool* getTool(void) {
         Worker::WorkerTools::iterator it_type;
+        T                             tool;
 
-        it_type = this->tools.find(type);
+        it_type = this->tools.find(tool.type);
         if (it_type == this->tools.end()) return NULL;
         if (it_type->second.size() == 0) {
             tools.erase(it_type);
@@ -107,9 +109,11 @@ class Worker {
         tool->use();
     }
 
-    void work(ToolType type) {
+    template <typename T>
+    void work(void) {
         if (tools.empty()) throw Worker::NoTool();
-        Tool* tool = this->getTool(type);
+
+        Tool* tool = this->getTool<T>();
         if (!tool) throw Worker::NoTool();
 
         test::comment("Worker is working with his tool");

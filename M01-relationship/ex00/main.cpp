@@ -55,7 +55,7 @@ int main(void) {
 
         test::enter();
         // shovel.use(); // can't call private method
-        worker->work(SHOVEL);
+        worker->work<Shovel>();
         worker->work();
 
         test::subtitle("deleting Worker");
@@ -108,7 +108,51 @@ int main(void) {
         test::error(e.what());
     }
 
-    // Worker has a list of Tools, hammers and shovels
+    test::subtitle("Worker has a list of Tools: hammers and shovels");
+    {
+        test::subtitle("Create 1 worker and some tools");
+        Worker worker = Worker();
+        std::cout << worker << std::endl;
+
+        test::enter();
+        test::subtitle("Worker gets 10 tools");
+        for (int i = 0; i < 5; i++) {
+            worker.takeTool(new Shovel);
+            worker.takeTool(new Hammer);
+        }
+        std::cout << worker << std::endl;
+
+        test::enter();
+        worker.work();
+        worker.work<Shovel>();
+        worker.work<Hammer>();
+        std::cout << worker << std::endl;
+
+        test::subtitle("BONUS - getTool");
+        Tool* tool = worker.getTool<Shovel>();
+
+        test::enter();
+        test::subtitle("A thief takes a shovel from worker");
+        Worker thief = Worker();
+        thief.takeTool(tool);
+
+        test::enter();
+        std::cout << "Worker: " << worker << std::endl;
+        test::enter();
+        std::cout << "Thief: " << thief << std::endl;
+
+        test::enter();
+        test::subtitle("deleting all tools");
+        while (tool) {
+            delete tool;
+            tool = worker.getTool();
+        }
+
+        test::enter();
+        std::cout << "Worker: " << worker << std::endl;
+        test::enter();
+        std::cout << "Thief: " << thief << std::endl;
+    }
 
     test::title("ASSOCIATION ");
 }
