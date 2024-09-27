@@ -6,7 +6,7 @@
 #include "Worker.hpp"
 #include "test_utils.hpp"
 
-int main(void) {
+void composition_test(void) {
     test::title("COMPOSITION");
     test::subtitle(
         "A Position and a Statistic are part of a Worker and are destroyed when "
@@ -33,7 +33,9 @@ int main(void) {
         test::enter();
         test::comment("remaining stack variables destructor:");
     }
+}
 
+void aggregation_inherence_test(void) {
     test::title("AGGREGATION & INHERENCE");
     test::subtitle(
         "The Worker can have a Tool that is not destroyed in case of Worker "
@@ -44,7 +46,7 @@ int main(void) {
         std::cout << *worker << std::endl;
         test::enter();
 
-        test::subtitle("Create a Shovel - Shovel is a Tool");
+        test::subtitle("Create a Shovel - Shovel is a Tool (INHERENCE)");
         Tool* shovel = new Shovel();
         std::cout << *shovel << std::endl;
 
@@ -81,7 +83,7 @@ int main(void) {
         test::subtitle("Create 2 works");
         Worker worker1 = Worker();
         Worker worker2 = Worker();
-        test::subtitle("Create a hammer - Hammer is a Tool");
+        test::subtitle("Create a hammer - Hammer is a Tool (INHERENCE)");
         Hammer hammer = Hammer();
 
         test::subtitle("Worker 1 takes the tool");
@@ -107,7 +109,10 @@ int main(void) {
     } catch (Worker::NoTool& e) {
         test::error(e.what());
     }
+}
 
+void inherence_test(void) {
+    test::title("INHERENCE");
     test::subtitle("Worker has a list of Tools: hammers and shovels");
     {
         test::subtitle("Create 1 worker and some tools");
@@ -153,6 +158,17 @@ int main(void) {
         test::enter();
         std::cout << "Thief: " << thief << std::endl;
     }
+}
 
+void association_test(void) {
     test::title("ASSOCIATION ");
+}
+
+int main(void) {
+    composition_test();
+    aggregation_inherence_test();
+    inherence_test();
+    association_test();
+
+    return 0;
 }
