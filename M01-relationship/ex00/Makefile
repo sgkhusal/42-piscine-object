@@ -9,7 +9,8 @@ INC     =	test_utils.hpp \
 			Worker.hpp \
 			Tool.hpp \
 			Shovel.hpp \
-			Hammer.hpp
+			Hammer.hpp \
+			Workshop.hpp
 INCPATH = -I./src
 
 OBJDIR  = obj

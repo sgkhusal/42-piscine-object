@@ -1,10 +1,11 @@
 #include <iostream>
 
+#include "test_utils.hpp"
+#include "Tool.hpp"
 #include "Hammer.hpp"
 #include "Shovel.hpp"
-#include "Tool.hpp"
 #include "Worker.hpp"
-#include "test_utils.hpp"
+#include "Workshop.hpp"
 
 void composition_test(void) {
     test::title("COMPOSITION");
@@ -162,6 +163,18 @@ void inherence_test(void) {
 
 void association_test(void) {
     test::title("ASSOCIATION ");
+
+    Workshop<Shovel> workshop = Workshop<Shovel>();
+    Worker worker = Worker();
+    Shovel shovel = Shovel();
+
+    worker.takeTool(&shovel);
+
+    workshop.signUp(&worker);
+    workshop.signUp(&worker);
+    workshop.executeWorkDay();
+    workshop.leave(&worker);
+    workshop.leave(&worker);
 }
 
 int main(void) {
