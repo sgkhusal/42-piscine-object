@@ -1,9 +1,9 @@
 #include <iostream>
 
+#include "Hammer.hpp"
+#include "Shovel.hpp"
 #include "Tool.hpp"
 #include "Worker.hpp"
-#include "Shovel.hpp"
-#include "Hammer.hpp"
 #include "test_utils.hpp"
 
 int main(void) {
@@ -82,12 +82,12 @@ int main(void) {
         Worker worker1 = Worker();
         Worker worker2 = Worker();
         test::subtitle("Create a hammer - Hammer is a Tool");
-        Hammer hammer  = Hammer();
+        Hammer hammer = Hammer();
 
         test::subtitle("Worker 1 takes the tool");
         worker1.takeTool(&hammer);
-        std::cout << "Worker 1: " << worker1 << std::endl;
-        std::cout << "Worker 2: " << worker2 << std::endl;
+        std::cout << "1: " << worker1 << std::endl;
+        std::cout << "2: " << worker2 << std::endl;
         std::cout << hammer << std::endl;
 
         test::enter();
@@ -95,8 +95,8 @@ int main(void) {
 
         test::subtitle("Worker 2 takes the same tool");
         worker2.takeTool(&hammer);
-        std::cout << "Worker 1: " << worker1 << std::endl;
-        std::cout << "Worker 2: " << worker2 << std::endl;
+        std::cout << "1: " << worker1 << std::endl;
+        std::cout << "2: " << worker2 << std::endl;
         std::cout << hammer << std::endl;
 
         test::enter();
