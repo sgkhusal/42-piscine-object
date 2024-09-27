@@ -133,7 +133,7 @@ void inherence_test(void) {
         worker.work<Hammer>();
         std::cout << worker << std::endl;
 
-        test::subtitle("BONUS - getTool");
+        test::enter();
         Tool* tool = worker.getTool<Shovel>();
 
         test::enter();

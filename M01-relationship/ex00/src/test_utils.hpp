@@ -8,6 +8,7 @@ namespace test {
 #define ORANGE "\033[0;38;5;166m"
 #define BLUE "\033[38;5;75m"
 #define GREEN "\033[1;32m"
+#define PURPLE "\033[38;5;200m"
 #define YELLOW "\033[1;33m"
 #define GREY "\033[38;5;244m"
 #define RESET "\033[0m"

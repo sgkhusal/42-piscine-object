@@ -4,6 +4,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <typeinfo>
 
 #include "Position.hpp"
 #include "Statistic.hpp"
@@ -56,6 +57,9 @@ class Worker {
     Tool* getTool(void) {
         Worker::WorkerTools::iterator it_type;
         T                             tool;
+        std::cout << PURPLE
+                  << "BONUS getTool<ToolType> with ToolType = " << typeid(tool).name()
+                  << RESET << std::endl;
 
         it_type = this->tools.find(tool.type);
         if (it_type == this->tools.end()) return NULL;
